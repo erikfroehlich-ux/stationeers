@@ -1,0 +1,114 @@
+alias NAME r15
+alias gasfilter r14
+alias gasratio r13
+alias solltemp r12
+alias setting r13
+define PUMPE 1310794736
+define VALVE -1280984102
+define TANK 272136332
+define FILTER.SMALL.CO2 1635000764
+define FILTER.HEAVY.CO2 1876847024
+define FILTER.SMALL.N2 632853248
+define FILTER.HEAVY.N2 -1387439451
+define FILTER.SMALL.N2O -1247674305
+define FILTER.HEAVY.N2O 465267979
+define FILTER.SMALL.O2 -721824748
+define FILTER.HEAVY.O2 -1217998945
+define FILTER.SMALL.X 1915566057
+define FILTER.HEAVY.X 1959564765
+define FILTER.SMALL.H2 15011598
+define FILTER.HEAVY.H2 1255156286
+define FILTER.SMALL.H2O -1993197973
+define FILTER.HEAVY.H2O 2004969680
+l NAME db NameHash
+s db Setting 0
+main:
+#druckablassen
+lbn r2 TANK NAME TotalMoles 0
+sgt r1 r2 15000
+s d0 On r1
+#ausgangspumpe
+l r2 db PressureOutput
+sgt r1 r2 1
+sbn PUMPE NAME On r1
+#finde raus welche Filter am slot 0
+ls gasfilter db 0 PrefabHash
+beq gasfilter FILTER.SMALL.CO2 isCO2
+beq gasfilter FILTER.HEAVY.CO2 isCO2
+beq gasfilter FILTER.SMALL.N2 isN2
+beq gasfilter FILTER.HEAVY.N2 isN2
+beq gasfilter FILTER.SMALL.N2O isN2O
+beq gasfilter FILTER.HEAVY.N2O isN2O
+beq gasfilter FILTER.SMALL.O2 isO2
+beq gasfilter FILTER.HEAVY.O2 isO2
+beq gasfilter FILTER.SMALL.X isX
+beq gasfilter FILTER.HEAVY.X isX
+beq gasfilter FILTER.SMALL.H2 isH2
+beq gasfilter FILTER.HEAVY.H2 isH2
+beq gasfilter FILTER.SMALL.H2O isH2O
+beq gasfilter FILTER.HEAVY.H2O isH2O
+j isnofilter
+aftergas:
+#kuehlung
+lbn r2 TANK NAME Temperature 0
+sgt r1 r2 solltemp
+sbn VALVE NAME On r1
+#wenn unter 10Mpa nur ein filter an
+l r2 db PressureInput
+brlt r2 10000 unter
+j main
+unter:
+l r2 db RatioCarbonDioxideInput
+sgt r1 r2 0
+beq setting 1 an
+
+an:
+s db Mode r1
+j ra
+
+j ra
+isnofilter:
+s db Setting 99
+afterfilter:
+s db Setting setting
+sgt r2 gasratio 0
+l r3 db PressureInput
+sgt r4 r3 10000
+and r1 r2 r4
+s db Mode r1
+j aftergas
+isCO2:
+move setting 1
+l gasratio db RatioCarbonDioxideInput
+move solltemp 323
+j afterfilter
+isN2:
+move setting 2
+l gasratio db RatioNitrogenInput
+move solltemp 293
+j afterfilter
+isN2O:
+move setting 3
+l gasratio db RatioNitrousOxideInput
+move solltemp 473
+j afterfilter
+isO2:
+move setting 4
+l gasratio db RatioOxygenInput
+move solltemp 293
+j afterfilter
+isX:
+move setting 5
+l gasratio db RatioPollutantInput
+move solltemp 473
+j afterfilter
+isH2:
+move setting 6
+l gasratio db RatioVolatilesInput
+move solltemp 293
+j afterfilter
+isH2O:
+move setting 7
+l gasratio db RatioWaterInput
+move solltemp 473
+j afterfilter
