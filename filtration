@@ -2,7 +2,7 @@ alias NAME r15
 alias gasfilter r14
 alias gasratio r13
 alias solltemp r12
-alias setting r13
+alias setting r11
 define PUMPE 1310794736
 define VALVE -1280984102
 define TANK 272136332
@@ -57,16 +57,10 @@ sbn VALVE NAME On r1
 l r2 db PressureInput
 brlt r2 10000 unter
 j main
+
 unter:
-l r2 db RatioCarbonDioxideInput
-sgt r1 r2 0
-beq setting 1 an
+j main
 
-an:
-s db Mode r1
-j ra
-
-j ra
 isnofilter:
 s db Setting 99
 afterfilter:
