@@ -7,9 +7,7 @@ define PUMPE 1310794736
 define VALVE -1280984102
 define TANK 272136332
 l NAME db NameHash
-s db Setting 0
 main:
-#druckablassen
 lbn r2 TANK NAME TotalMoles 0
 sgt r1 r2 15000
 s d0 On r1
@@ -17,7 +15,6 @@ s d0 On r1
 l r2 db PressureOutput
 sgt r1 r2 1
 sbn PUMPE NAME On r1
-#finde raus welche Filter am slot 0
 ls gasfilter db 0 PrefabHash
 beq gasfilter 1635000764 isCO2
 beq gasfilter -147575240 isCO2
@@ -42,14 +39,14 @@ beq gasfilter -1089201089 isH2O
 beq gasfilter 2004969680 isH2O
 j isnofilter
 afterfilter:
-#kuehlung
 lbn r2 TANK NAME Temperature 0
 sgt r1 r2 solltemp
 sbn VALVE NAME On r1
-#wenn unter 10Mpa nur ein filter an
 l r2 db PressureInput
-brlt r2 10000 unter
-brge r2 10000 ueber
+s db Setting gasratio
+blt gasratio 0 Modeoff
+blt r2 10000 unter
+bge r2 10000 ueber
 j main
 unter:
 l r0 db RatioCarbonDioxideInput
@@ -79,14 +76,17 @@ ble r0 0 ra
 beq r10 setting Modeon
 j main
 Modeon:
-s db Mode On
+s db Mode 1
+j main
+Modeoff:
+s db Mode 0
 j main
 isnofilter:
-s db Setting 99
+move setting 99
 s db Mode 0
 j main
 ueber:
-s db Setting setting
+s db Setting gasratio
 sgt r1 gasratio 0
 s db Mode r1
 j main
