@@ -6,7 +6,6 @@ alias setting r11
 define PUMPE 1310794736
 define VALVE -1280984102
 define TANK 272136332
-
 l NAME db NameHash
 s db Setting 0
 main:
@@ -52,12 +51,12 @@ l r2 db PressureInput
 brlt r2 10000 unter
 brge r2 10000 ueber
 j main
-
 unter:
 j main
-
 isnofilter:
 s db Setting 99
+s db Mode 0
+j main
 ueber:
 s db Setting setting
 sgt r1 gasratio 0
