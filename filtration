@@ -52,6 +52,34 @@ brlt r2 10000 unter
 brge r2 10000 ueber
 j main
 unter:
+l r0 db RatioCarbonDioxideInput
+move r10 1
+jal checkgas
+l r0 db RatioNitrogenInput
+move r10 2
+jal checkgas
+l r0 db RatioNitrousOxideInput
+move r10 3
+jal checkgas
+l r0 db RatioOxygenInput
+move r10 4
+jal checkgas
+l r0 db RatioPollutantInput
+move r10 5
+jal checkgas
+l r0 db RatioVolatilesInput
+move r10 6
+jal checkgas
+l r0 db RatioWaterInput
+move r10 7
+jal checkgas
+j main
+checkgas:
+ble r0 0 ra
+beq r10 setting Modeon
+j main
+Modeon:
+s db Mode On
 j main
 isnofilter:
 s db Setting 99
@@ -95,5 +123,5 @@ j afterfilter
 isH2O:
 move setting 7
 l gasratio db RatioWaterInput
-move solltemp 473
+move solltemp 673
 j afterfilter
