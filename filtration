@@ -6,20 +6,7 @@ alias setting r11
 define PUMPE 1310794736
 define VALVE -1280984102
 define TANK 272136332
-define FILTER.SMALL.CO2 1635000764
-define FILTER.HEAVY.CO2 1876847024
-define FILTER.SMALL.N2 632853248
-define FILTER.HEAVY.N2 -1387439451
-define FILTER.SMALL.N2O -1247674305
-define FILTER.HEAVY.N2O 465267979
-define FILTER.SMALL.O2 -721824748
-define FILTER.HEAVY.O2 -1217998945
-define FILTER.SMALL.X 1915566057
-define FILTER.HEAVY.X 1959564765
-define FILTER.SMALL.H2 15011598
-define FILTER.HEAVY.H2 1255156286
-define FILTER.SMALL.H2O -1993197973
-define FILTER.HEAVY.H2O 2004969680
+
 l NAME db NameHash
 s db Setting 0
 main:
@@ -33,20 +20,27 @@ sgt r1 r2 1
 sbn PUMPE NAME On r1
 #finde raus welche Filter am slot 0
 ls gasfilter db 0 PrefabHash
-beq gasfilter FILTER.SMALL.CO2 isCO2
-beq gasfilter FILTER.HEAVY.CO2 isCO2
-beq gasfilter FILTER.SMALL.N2 isN2
-beq gasfilter FILTER.HEAVY.N2 isN2
-beq gasfilter FILTER.SMALL.N2O isN2O
-beq gasfilter FILTER.HEAVY.N2O isN2O
-beq gasfilter FILTER.SMALL.O2 isO2
-beq gasfilter FILTER.HEAVY.O2 isO2
-beq gasfilter FILTER.SMALL.X isX
-beq gasfilter FILTER.HEAVY.X isX
-beq gasfilter FILTER.SMALL.H2 isH2
-beq gasfilter FILTER.HEAVY.H2 isH2
-beq gasfilter FILTER.SMALL.H2O isH2O
-beq gasfilter FILTER.HEAVY.H2O isH2O
+beq gasfilter 1635000764 isCO2
+beq gasfilter -147575240 isCO2
+beq gasfilter 1876847024 isCO2
+beq gasfilter 632853248 isN2
+beq gasfilter 1033488730 isN2
+beq gasfilter -1387439451 isN2
+beq gasfilter -1247674305 isN2O
+beq gasfilter -2072216503 isN2O
+beq gasfilter 465267979 isN2O
+beq gasfilter -721824748 isO2
+beq gasfilter -101452292 isO2
+beq gasfilter -1217998945 isO2
+beq gasfilter 1915566057 isX
+beq gasfilter -1636159526 isX
+beq gasfilter 1959564765 isX
+beq gasfilter 15011598 isH2
+beq gasfilter 1899166295 isH2
+beq gasfilter 1255156286 isH2
+beq gasfilter -1993197973 isH2O
+beq gasfilter -1089201089 isH2O
+beq gasfilter 2004969680 isH2O
 j isnofilter
 aftergas:
 #kuehlung
