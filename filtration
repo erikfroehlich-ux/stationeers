@@ -42,7 +42,7 @@ beq gasfilter -1993197973 isH2O
 beq gasfilter -1089201089 isH2O
 beq gasfilter 2004969680 isH2O
 j isnofilter
-aftergas:
+afterfilter:
 #kuehlung
 lbn r2 TANK NAME Temperature 0
 sgt r1 r2 solltemp
@@ -50,6 +50,7 @@ sbn VALVE NAME On r1
 #wenn unter 10Mpa nur ein filter an
 l r2 db PressureInput
 brlt r2 10000 unter
+brge r2 10000 ueber
 j main
 
 unter:
@@ -57,14 +58,11 @@ j main
 
 isnofilter:
 s db Setting 99
-afterfilter:
+ueber:
 s db Setting setting
-sgt r2 gasratio 0
-l r3 db PressureInput
-sgt r4 r3 10000
-and r1 r2 r4
+sgt r1 gasratio 0
 s db Mode r1
-j aftergas
+j main
 isCO2:
 move setting 1
 l gasratio db RatioCarbonDioxideInput
